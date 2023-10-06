@@ -19,3 +19,27 @@ class RegistrationSerializer(serializers.ModelSerializer):
         exclude = []                                              # Different way, same result
 
 
+class RegistrationListSerializerByStudent(serializers.ModelSerializer):
+    course = serializers.ReadOnlyField(source='course.descricao')
+    periodo = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Registration
+        fields = ['course', 'periodo']
+
+    @staticmethod
+    def get_periodo(obj):
+        return obj.get_periodo_display()
+
+
+class RegistrationListSerializerByCourse(serializers.ModelSerializer):
+    student_nome = serializers.ReadOnlyField(source='student.nome')
+
+    class Meta:
+        model = Registration
+        fields = ['student_nome']
+
+
+
+
+
